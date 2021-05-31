@@ -1,0 +1,31 @@
+.Header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-size: 1.5rem;
+  color: #EEEEEE;
+  background-color: #222831;
+}
+
+.Header div {
+  padding: 0.5rem 1rem;
+}
+
+.Header .title {
+  font-weight: bold;
+  background-color: #00ADB5;
+}
+
+.Header .button {
+  cursor: pointer;
+}
+
+.Header .button:hover {
+  background-color: #393E46;
+}
+
+.Header .button.active {
+  color: #00ADB5;
+}
