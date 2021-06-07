@@ -1,0 +1,12 @@
+.Main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.Main > div {
+  font-size: 4rem;
+  font-weight: bold;
+}

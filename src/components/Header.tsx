@@ -1,25 +1,28 @@
 import './Header.css';
 import React, { useState } from 'react';
 
-export default function Header() {
-  const [activePage, setActivePage] = useState('main');
+interface IProps {
+  setPage: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function Header(props: IProps) {
   const [shareHudsClass, setShareHudsClass] = useState('button');
   const [skillQuizClass, setSkillQuizClass] = useState('button');
 
   const handleClickTitle = () => {
-    setActivePage('main');
+    props.setPage('Main');
     setShareHudsClass('button');
     setSkillQuizClass('button');
   };
 
   const handleClickShareHudsButton = () => {
-    setActivePage('shareHuds');
+    props.setPage('ShareHuds');
     setShareHudsClass('button active');
     setSkillQuizClass('button');
   };
 
   const handleClickSkillQuizClass = () => {
-    setActivePage('skillQuiz');
+    props.setPage('SkillQuiz');
     setShareHudsClass('button');
     setSkillQuizClass('button active');
   };

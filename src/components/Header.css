@@ -16,6 +16,7 @@
 .Header .title {
   font-weight: bold;
   background-color: #00ADB5;
+  cursor: pointer;
 }
 
 .Header .button {
