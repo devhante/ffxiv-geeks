@@ -1,6 +1,12 @@
 import './ShareHuds.css';
-import React from 'react';
+import React, { useState } from 'react';
+import Navbar from './Navbar';
 
 export default function ShareHuds() {
-  return <div className="ShareHuds"></div>;
+  const [nav, setNav] = useState<string>('None');
+  return (
+    <div className="ShareHuds">
+      <Navbar nav={nav} setNav={setNav} />
+    </div>
+  );
 }

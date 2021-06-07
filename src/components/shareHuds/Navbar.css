@@ -1,0 +1,47 @@
+.Navbar {
+  display: flex;
+  border: 1px solid #DDDDDD;
+  background-color: #EEEEEE;
+}
+
+.Navbar > .padding {
+  flex-grow: 1;
+}
+
+.Navbar > .item {
+  position: relative;
+  width: 10rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.Navbar > .item > .text {
+  padding: 0.5rem 0;
+}
+
+.Navbar > .item > .text:hover {
+  background-color: #DDDDDD;
+}
+
+.Navbar .dropdown.active {
+  display: block;
+}
+
+.Navbar .dropdown {
+  display: none;
+  box-sizing: border-box;
+  position: absolute;
+  top: 2.25rem;
+  width: 10rem;
+  border: 1px solid #DDDDDD;
+  background-color: #EEEEEE;
+  z-index: 999
+}
+
+.Navbar .dropdown > .dropdown-item {
+  padding: 0.5rem 0; 
+}
+
+.Navbar .dropdown > .dropdown-item:hover {
+  background-color: #DDDDDD;
+}
