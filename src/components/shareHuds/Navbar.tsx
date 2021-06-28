@@ -1,12 +1,16 @@
 import './Navbar.css';
 import React, { useEffect, useRef } from 'react';
-import { Job, Nav } from './Type';
+import { Hotbar, Job, Mode, Nav } from './Type';
 
 interface IProps {
+  mode: Mode;
+  setMode: React.Dispatch<React.SetStateAction<Mode>>;
+  nav: Nav;
+  setNav: React.Dispatch<React.SetStateAction<Nav>>;
   job: Job | null;
   setJob: React.Dispatch<React.SetStateAction<Job | null>>;
-  nav: string;
-  setNav: React.Dispatch<React.SetStateAction<Nav>>;
+  hotbar: Hotbar | null;
+  setHotbar: React.Dispatch<React.SetStateAction<Hotbar | null>>;
 }
 
 function useOutsideAlerter(
@@ -81,12 +85,12 @@ export default function Navbar(props: IProps) {
     { key: 'RDM', value: '적마도사' }
   ];
 
-  const dropdownItems = jobList.map((item, index) => {
+  const selectJobItems = jobList.map((item, index) => {
     const className =
       item.key === props.job ? 'dropdown-item selected' : 'dropdown-item';
     const onClick = () => {
-      props.setJob(item.key);
       props.setNav('None');
+      props.setJob(item.key);
     };
     return (
       <div className={className} onClick={onClick} key={index}>
@@ -104,6 +108,49 @@ export default function Navbar(props: IProps) {
     }
   });
 
+  const hotbarList: { key: Hotbar; value: string }[] = [
+    { key: '12×1', value: '12×1' },
+    { key: '6×2', value: '6×2' },
+    { key: '4×3', value: '4×3' },
+    { key: '3×4', value: '3×4' },
+    { key: '2×6', value: '2×6' },
+    { key: '1×12', value: '1×12' }
+  ];
+
+  const createHotbarItems = hotbarList.map((item, index) => {
+    const className =
+      item.key === props.hotbar ? 'dropdown-item selected' : 'dropdown-item';
+    const onClick = () => {
+      props.setMode('CreateHotbar');
+      props.setNav('None');
+      props.setHotbar(item.key);
+    };
+    return (
+      <div className={className} onClick={onClick} key={index}>
+        {item.value}
+      </div>
+    );
+  });
+
+  let createHotbarText = '단축바 생성';
+  let createHotbarTextClassName = 'text';
+  hotbarList.forEach((item) => {
+    if (item.key === props.hotbar) {
+      createHotbarText = item.value;
+      createHotbarTextClassName = 'text selected';
+    }
+  });
+
+  const handleClickAssignHotkey = () => {
+    props.setMode('AssignHotkey');
+    props.setHotbar(null);
+  };
+
+  const handleClickAssignSkill = () => {
+    props.setMode('AssignSkill');
+    props.setHotbar(null);
+  };
+
   return (
     <div className="Navbar">
       <div className="padding"></div>
@@ -113,30 +160,35 @@ export default function Navbar(props: IProps) {
         </div>
         <div
           className={`dropdown ${props.nav === 'SelectJob' ? 'active' : ''}`}>
-          {dropdownItems}
+          {selectJobItems}
         </div>
       </div>
       <div className="item" ref={createHotbarRef}>
-        <div className="text" onClick={onClickCreateHotbar}>
-          단축바 생성
+        <div
+          className={createHotbarTextClassName}
+          onClick={onClickCreateHotbar}>
+          {createHotbarText}
         </div>
         <div
           className={`dropdown ${
             props.nav === 'CreateHotbar' ? 'active' : ''
           }`}>
-          <div className="dropdown-item">12×1</div>
-          <div className="dropdown-item">6×2</div>
-          <div className="dropdown-item">4×3</div>
-          <div className="dropdown-item">3×4</div>
-          <div className="dropdown-item">2×6</div>
-          <div className="dropdown-item">1×12</div>
+          {createHotbarItems}
         </div>
       </div>
       <div className="item">
-        <div className="text">단축키 할당</div>
+        <div
+          className={props.mode === 'AssignHotkey' ? 'text selected' : 'text'}
+          onClick={handleClickAssignHotkey}>
+          단축키 할당
+        </div>
       </div>
       <div className="item">
-        <div className="text">스킬 할당</div>
+        <div
+          className={props.mode === 'AssignSkill' ? 'text selected' : 'text'}
+          onClick={handleClickAssignSkill}>
+          스킬 할당
+        </div>
       </div>
       <div className="padding"></div>
     </div>

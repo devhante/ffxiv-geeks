@@ -1,3 +1,4 @@
+export type Mode = 'None' | 'CreateHotbar' | 'AssignHotkey' | 'AssignSkill';
 export type Nav = 'None' | 'SelectJob' | 'CreateHotbar';
 export type Job =
   | 'PLD'
