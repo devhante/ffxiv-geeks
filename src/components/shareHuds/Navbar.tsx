@@ -1,9 +1,12 @@
 import './Navbar.css';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { Job, Nav } from './Type';
 
 interface IProps {
+  job: Job | null;
+  setJob: React.Dispatch<React.SetStateAction<Job | null>>;
   nav: string;
-  setNav: React.Dispatch<React.SetStateAction<string>>;
+  setNav: React.Dispatch<React.SetStateAction<Nav>>;
 }
 
 function useOutsideAlerter(
@@ -24,33 +27,31 @@ function useOutsideAlerter(
 }
 
 export default function Navbar(props: IProps) {
-  const [dropdown, setDropdown] = useState<string>('None');
-
   const onClickSelectJob = () => {
-    if (dropdown !== 'SelectJob') {
-      setDropdown('SelectJob');
+    if (props.nav !== 'SelectJob') {
+      props.setNav('SelectJob');
     } else {
-      setDropdown('None');
-    }
-  };
-
-  const onClickSelectJobOutside = () => {
-    if (dropdown === 'SelectJob') {
-      setDropdown('None');
+      props.setNav('None');
     }
   };
 
   const onClickCreateHotbar = () => {
-    if (dropdown !== 'CreateHotbar') {
-      setDropdown('CreateHotbar');
+    if (props.nav !== 'CreateHotbar') {
+      props.setNav('CreateHotbar');
     } else {
-      setDropdown('None');
+      props.setNav('None');
+    }
+  };
+
+  const onClickSelectJobOutside = () => {
+    if (props.nav === 'SelectJob') {
+      props.setNav('None');
     }
   };
 
   const onClickCreateHotbarOutside = () => {
-    if (dropdown === 'CreateHotbar') {
-      setDropdown('None');
+    if (props.nav === 'CreateHotbar') {
+      props.setNav('None');
     }
   };
 
@@ -60,31 +61,59 @@ export default function Navbar(props: IProps) {
   const createHotbarRef = useRef(null);
   useOutsideAlerter(createHotbarRef, onClickCreateHotbarOutside);
 
+  const jobList: { key: Job; value: string }[] = [
+    { key: 'PLD', value: '나이트' },
+    { key: 'WAR', value: '전사' },
+    { key: 'DRK', value: '암흑기사' },
+    { key: 'GNB', value: '건브레이커' },
+    { key: 'WHM', value: '백마도사' },
+    { key: 'SCH', value: '학자' },
+    { key: 'AST', value: '점성술사' },
+    { key: 'MNK', value: '몽크' },
+    { key: 'DRG', value: '용기사' },
+    { key: 'NIN', value: '닌자' },
+    { key: 'SAM', value: '사무라이' },
+    { key: 'BRD', value: '음유시인' },
+    { key: 'MCH', value: '기공사' },
+    { key: 'DNC', value: '무도가' },
+    { key: 'BLM', value: '흑마도사' },
+    { key: 'SMN', value: '소환사' },
+    { key: 'RDM', value: '적마도사' }
+  ];
+
+  const dropdownItems = jobList.map((item, index) => {
+    const className =
+      item.key === props.job ? 'dropdown-item selected' : 'dropdown-item';
+    const onClick = () => {
+      props.setJob(item.key);
+      props.setNav('None');
+    };
+    return (
+      <div className={className} onClick={onClick} key={index}>
+        {item.value}
+      </div>
+    );
+  });
+
+  let selectJobText = '잡 선택';
+  let selectJobTextClassName = 'text';
+  jobList.forEach((item) => {
+    if (item.key === props.job) {
+      selectJobText = item.value;
+      selectJobTextClassName = 'text selected';
+    }
+  });
+
   return (
     <div className="Navbar">
       <div className="padding"></div>
       <div className="item" ref={selectJobRef}>
-        <div className="text" onClick={onClickSelectJob}>
-          잡 선택
+        <div className={selectJobTextClassName} onClick={onClickSelectJob}>
+          {selectJobText}
         </div>
-        <div className={`dropdown ${dropdown === 'SelectJob' ? 'active' : ''}`}>
-          <div className="dropdown-item">나이트</div>
-          <div className="dropdown-item">전사</div>
-          <div className="dropdown-item">암흑기사</div>
-          <div className="dropdown-item">건브레이커</div>
-          <div className="dropdown-item">백마도사</div>
-          <div className="dropdown-item">학자</div>
-          <div className="dropdown-item">점성술사</div>
-          <div className="dropdown-item">몽크</div>
-          <div className="dropdown-item">용기사</div>
-          <div className="dropdown-item">닌자</div>
-          <div className="dropdown-item">사무라이</div>
-          <div className="dropdown-item">음유시인</div>
-          <div className="dropdown-item">기공사</div>
-          <div className="dropdown-item">무도가</div>
-          <div className="dropdown-item">흑마도사</div>
-          <div className="dropdown-item">소환사</div>
-          <div className="dropdown-item">적마도사</div>
+        <div
+          className={`dropdown ${props.nav === 'SelectJob' ? 'active' : ''}`}>
+          {dropdownItems}
         </div>
       </div>
       <div className="item" ref={createHotbarRef}>
@@ -92,7 +121,9 @@ export default function Navbar(props: IProps) {
           단축바 생성
         </div>
         <div
-          className={`dropdown ${dropdown === 'CreateHotbar' ? 'active' : ''}`}>
+          className={`dropdown ${
+            props.nav === 'CreateHotbar' ? 'active' : ''
+          }`}>
           <div className="dropdown-item">12×1</div>
           <div className="dropdown-item">6×2</div>
           <div className="dropdown-item">4×3</div>
